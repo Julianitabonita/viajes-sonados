@@ -1,0 +1,65 @@
+{% extends "modulo/base.html" %}
+
+{% block titulo %}{{ viaje.destino }}{% endblock %}
+
+{% block contenido %}
+<a href="{% url 'modulo:lista' %}" class="text-decoration-none small">
+    <i class="bi bi-arrow-left"></i> Volver a mis viajes
+</a>
+
+<div class="tarjeta p-4 p-md-5 mt-3">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+        <span class="text-uppercase small fw-semibold" style="color: #2dd4bf; letter-spacing: 0.05em;">
+            <i class="bi bi-geo-alt-fill"></i> {{ viaje.pais }}
+        </span>
+        {% if viaje.visitado %}
+            <span class="badge rounded-pill bg-success-subtle text-success-emphasis">Visitado</span>
+        {% else %}
+            <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis">Pendiente</span>
+        {% endif %}
+    </div>
+
+    <h1 class="fw-bold display-5 mb-4">{{ viaje.destino }}</h1>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6">
+            <div class="p-3 rounded-3" style="background: #0b1220;">
+                <div class="text-secondary small mb-1"><i class="bi bi-calendar-event"></i> Fecha tentativa</div>
+                <div class="fs-5 fw-semibold">{{ viaje.fecha_tentativa|date:"j \d\e F \d\e Y" }}</div>
+                                {% if not viaje.visitado %}
+                    {% with dias=viaje.dias_restantes %}
+                    <div class="small fw-semibold mt-1" style="color: #2dd4bf;">
+                        <i class="bi bi-airplane"></i>
+                        {% if dias > 1 %}Faltan {{ dias }} días
+                        {% elif dias == 1 %}¡Es mañana!
+                        {% elif dias == 0 %}¡Es hoy!
+                        {% else %}Fecha pasada
+                        {% endif %}
+                    </div>
+                    {% endwith %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="p-3 rounded-3" style="background: #0b1220;">
+                <div class="text-secondary small mb-1"><i class="bi bi-wallet2"></i> Presupuesto</div>
+                <div class="fs-5 fw-semibold">$ {{ viaje.presupuesto|floatformat:"0g" }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="text-secondary small mb-1"><i class="bi bi-journal-text"></i> Notas</div>
+        <p class="mb-0">{{ viaje.notas|default:"Sin notas" }}</p>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'modulo:editar' viaje.pk %}" class="btn btn-aventura">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a href="{% url 'modulo:eliminar' viaje.pk %}" class="btn btn-outline-danger rounded-pill">
+            <i class="bi bi-trash"></i> Eliminar
+        </a>
+    </div>
+</div>
+{% endblock %}

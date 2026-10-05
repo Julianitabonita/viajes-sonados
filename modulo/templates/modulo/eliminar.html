@@ -1,0 +1,24 @@
+{% extends "modulo/base.html" %}
+
+{% block titulo %}Eliminar viaje{% endblock %}
+
+{% block contenido %}
+<div class="tarjeta p-4 p-md-5 mt-3 mx-auto text-center" style="max-width: 560px; border-color: #7f1d1d;">
+    <i class="bi bi-exclamation-triangle fs-1 text-danger"></i>
+    <h1 class="fw-bold h3 mt-3">¿Eliminar este viaje?</h1>
+
+    <p class="text-secondary mt-3 mb-1">Vas a eliminar</p>
+    <p class="fs-4 fw-semibold mb-1">{{ viaje.destino }}</p>
+    <p class="text-secondary">{{ viaje.pais }}</p>
+
+    <p class="small text-secondary">Esta acción no se puede deshacer.</p>
+
+    <form method="post" class="d-flex justify-content-center gap-2 mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger rounded-pill px-4">
+            <i class="bi bi-trash"></i> Sí, eliminar
+        </button>
+        <a href="{% url 'modulo:detalle' viaje.pk %}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
